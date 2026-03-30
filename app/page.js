@@ -1,101 +1,76 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import { 
+  FiHome, 
+  FiBox, 
+  FiUsers, 
+  FiDatabase, 
+  FiLogIn 
+} from "react-icons/fi";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [open, setOpen] = useState(true);
+  const current = "dashboard"; // change this based on route
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const menu = [
+    { name: "Dashboard", icon: <FiHome />, key: "dashboard" },
+    { name: "Products", icon: <FiBox />, key: "products" },
+    { name: "Users", icon: <FiUsers />, key: "users" },
+    { name: "Data", icon: <FiDatabase />, key: "data" },
+    { name: "Auth", icon: <FiLogIn />, key: "auth" },
+  ];
+
+  return (
+    <div className="flex">
+
+      <div className={`
+        fixed top-0 left-0 h-full w-72
+        bg-gradient-to-b from-[#0f2027] via-[#203a43] to-[#2c5364]
+        text-white shadow-lg transform transition-transform duration-300
+        ${open ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+
+        <div className="p-5 text-xl font-semibold tracking-wide border-b border-white/10">
+          Inventory
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+
+        <div className="p-4 space-y-2">
+
+          {menu.map((item) => {
+            const active = current === item.key;
+
+            return (
+              <div
+                key={item.key}
+                className={`
+                  flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer
+                  transition-all duration-200
+
+                  ${active 
+                    ? 'bg-gradient-to-r from-green-500/20 to-green-400/10 border border-green-400 text-green-300 shadow-md' 
+                    : 'hover:bg-white/10 text-gray-300'}
+                `}
+              >
+                <span className="text-lg">{item.icon}</span>
+                <span className="text-sm font-medium">{item.name}</span>
+              </div>
+            );
+          })}
+
+        </div>
+
+      </div>
+
+      <div className="ml-72 pt-20 w-full">
+        <h1 className="text-2xl font-bold tracking-widest">Products</h1>
+      </div>
+        <div>
+          <div className='bg-[#0f2027] pt-100'>
+
+          </div>
+        </div>
     </div>
   );
 }
